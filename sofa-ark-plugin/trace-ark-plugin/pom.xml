@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web-ark-plugin</artifactId>
+    <artifactId>trace-ark-plugin</artifactId>
 
     <properties>
         <spring.boot.version>2.1.0.RELEASE</spring.boot.version>
@@ -42,12 +42,11 @@
                         </goals>
 
                         <configuration>
-                            <activator>com.alipay.sofa.ark.web.embed.WebPluginActivator</activator>
+                            <activator>com.alipay.sofa.ark.trace.TracePluginActivator</activator>
                             <exported>
-                                <packages>
-                                    <package>javax.*</package>
-                                    <package>org.apache.*</package>
-                                </packages>
+                                <classes>
+                                    <class>com.alipay.sofa.ark.trace.common.ITrace</class>
+                                </classes>
                             </exported>
                         </configuration>
                     </execution>
