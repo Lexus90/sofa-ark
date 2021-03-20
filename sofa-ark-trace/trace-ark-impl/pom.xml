@@ -34,16 +34,16 @@
             <groupId>com.alipay.sofa</groupId>
             <artifactId>trace-ark-client</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.lalaframework</groupId>-->
-<!--            <artifactId>lala-jaf-monitor-starter</artifactId>-->
-<!--            <version>1.1.12.RC6</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>cn.lalaframework</groupId>
-            <artifactId>lala-jaf-monitor-exporter</artifactId>
+            <artifactId>lala-jaf-monitor-starter</artifactId>
             <version>1.1.12.RC6</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>cn.lalaframework</groupId>-->
+<!--            <artifactId>lala-jaf-monitor-exporter</artifactId>-->
+<!--            <version>1.1.12.RC6</version>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

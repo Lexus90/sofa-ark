@@ -29,7 +29,7 @@
             <groupId>com.alipay.sofa</groupId>
             <artifactId>trace-ark-impl</artifactId>
             <version>1.1.8-SNAPSHOT</version>
-            <optional>true</optional>
+<!--            <optional>true</optional>-->
         </dependency>
     </dependencies>
 
@@ -51,16 +51,35 @@
                                 <classes>
                                     <class>com.alipay.sofa.ark.trace.facade.ITrace</class>
                                     <class>com.alipay.sofa.ark.trace.impl.TraceImpl</class>
-<!--                                    <class>cn.lalaframework.jaf.monitor.configure.agent.listener.AgentApplicationStartingListener</class>-->
+<!--                                    <class>cn.lalaframework.jaf.monitor.*</class>-->
                                 </classes>
                                 <packages>
-                                    <package>cn.lalaframework.jaf.monitor.*</package>
+                                    <package>cn.lalaframework.*</package>
+                                    <package>org.apache.skywalking.*</package>
                                 </packages>
                             </exported>
+
+                            <excludeGroupIds>
+                                <excludeGroupId>org.springframework</excludeGroupId>
+                                <excludeGroupId>org.springframework.boot</excludeGroupId>
+                                <excludeGroupId>org.apache.tomcat.embed</excludeGroupId>
+                                <excludeGroupId>org.apache.tomcat.embed</excludeGroupId>
+                            </excludeGroupIds>
+
+                            <excludeArtifactIds>
+                                <excludeArtifactId>lala-jaf-monitor-starter</excludeArtifactId>
+                                <excludeArtifactId>lala-jaf-monitor-metric-starter</excludeArtifactId>
+                                <excludeArtifactId>lala-jaf-monitor-trace-starter</excludeArtifactId>
+                                <excludeArtifactId>lala-jaf-monitor-version-starter</excludeArtifactId>
+                                <excludeArtifactId>lala-jaf-monitor-consul-starter</excludeArtifactId>
+                                <excludeArtifactId>lala-jaf-monitor-prometheus-starter</excludeArtifactId>
+                                <excludeArtifactId>lala-jaf-monitor-expire</excludeArtifactId>
+                            </excludeArtifactIds>
+
                             <shades>
                                 <shade>com.alipay.sofa:trace-ark-common:1.1.8-SNAPSHOT</shade>
                                 <shade>com.alipay.sofa:trace-ark-impl:1.1.8-SNAPSHOT</shade>
-<!--                                <shade>cn.lalaframework:lala-jaf-monitor-starter:1.1.11.RELEASE</shade>-->
+<!--                                <shade>cn.lalaframework:lala-jaf-monitor-starter</shade>-->
                             </shades>
                         </configuration>
                     </execution>
