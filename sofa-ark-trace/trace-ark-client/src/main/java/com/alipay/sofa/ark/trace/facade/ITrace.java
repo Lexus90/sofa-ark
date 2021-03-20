@@ -14,11 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alipay.sofa.ark.trace.common;
+package com.alipay.sofa.ark.trace.facade;
 
-public class TraceImpl implements ITrace {
-    @Override
-    public String log(String msg) {
-        return msg;
-    }
+public interface ITrace {
+    String log(String msg);
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>6</source>
+                    <target>6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <parent>
+        <groupId>com.alipay.sofa</groupId>
+        <version>1.1.8-SNAPSHOT</version>
+        <artifactId>sofa-ark-trace</artifactId>
+    </parent>
+
+    <artifactId>trace-ark-impl</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alipay.sofa</groupId>
+            <artifactId>trace-ark-client</artifactId>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.lalaframework</groupId>-->
+<!--            <artifactId>lala-jaf-monitor-starter</artifactId>-->
+<!--            <version>1.1.12.RC6</version>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>cn.lalaframework</groupId>
+            <artifactId>lala-jaf-monitor-exporter</artifactId>
+            <version>1.1.12.RC6</version>
+        </dependency>
+    </dependencies>
+</project>

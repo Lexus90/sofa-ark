@@ -16,15 +16,19 @@
  */
 package com.alipay.sofa.ark.trace;
 
+import cn.lalaframework.jaf.monitor.exporter.MonitorServer;
 import com.alipay.sofa.ark.spi.model.Plugin;
 import com.alipay.sofa.ark.spi.model.PluginContext;
 import com.alipay.sofa.ark.spi.service.PluginActivator;
-import com.alipay.sofa.ark.trace.common.ITrace;
-import com.alipay.sofa.ark.trace.common.TraceImpl;
+import com.alipay.sofa.ark.trace.facade.ITrace;
+import com.alipay.sofa.ark.trace.impl.TraceImpl;
 
 public class TracePluginActivator implements PluginActivator {
     @Override
     public void start(PluginContext context) {
+//        Config.Agent.INSTANCE_NAME = ConfigUtil.getIp();
+        MonitorServer.start();
+
         context.publishService(ITrace.class, new TraceImpl());
     }
 
