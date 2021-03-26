@@ -154,7 +154,7 @@ public class HandleArchiveStage implements PipelineStage {
 
             for (PluginArchive pluginArchive : pluginArchives) {
                 Plugin plugin = pluginFactoryService.createPlugin(pluginArchive, exportUrls,
-                    exportPackages);
+                    exportPackages, masterBiz.getBizClassLoader());
                 if (!isPluginExcluded(plugin)) {
                     pluginManagerService.registerPlugin(plugin);
                 } else {

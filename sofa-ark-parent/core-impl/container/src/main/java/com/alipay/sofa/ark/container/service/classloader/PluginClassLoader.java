@@ -45,6 +45,7 @@ public class PluginClassLoader extends AbstractClasspathClassLoader {
                                                              .getContainer()
                                                              .getService(PluginManagerService.class);
     private final Object            lock                 = new Object();
+    private BizClassLoader          bizClassLoader;
 
     static {
         ClassLoader.registerAsParallelCapable();
@@ -53,6 +54,12 @@ public class PluginClassLoader extends AbstractClasspathClassLoader {
     public PluginClassLoader(String pluginName, URL[] urls) {
         super(urls);
         this.pluginName = pluginName;
+    }
+
+    public PluginClassLoader(String pluginName, URL[] urls, BizClassLoader bizClassLoader) {
+        super(urls);
+        this.pluginName = pluginName;
+        this.bizClassLoader = bizClassLoader;
     }
 
     public String getPluginName() {
@@ -95,6 +102,13 @@ public class PluginClassLoader extends AbstractClasspathClassLoader {
         // 5. Import class export by other plugins
         if (clazz == null) {
             clazz = resolveExportClass(name);
+        }
+
+        if (clazz == null
+            && (name.startsWith("org.springframework")
+                || name.startsWith("cn.lalaframework.jaf.monitor") || name
+                    .startsWith("org.aopalliance"))) {
+            clazz = bizClassLoader.loadClassInternal(name, resolve);
         }
 
         // 6. Plugin classpath class

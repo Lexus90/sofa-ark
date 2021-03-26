@@ -89,7 +89,10 @@ public class BizClassLoader extends AbstractClasspathClassLoader {
         }
 
         // 5. Plugin Export class
-        if (clazz == null) {
+        if (clazz == null
+            && (!name.startsWith("org.springframework")
+                && !name.startsWith("cn.lalaframework.jaf.monitor") && !name
+                    .startsWith("org.aopalliance"))) {
             clazz = resolveExportClass(name);
         }
 

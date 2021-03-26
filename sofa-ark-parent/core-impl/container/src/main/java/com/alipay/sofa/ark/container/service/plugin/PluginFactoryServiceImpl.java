@@ -21,6 +21,7 @@ import com.alipay.sofa.ark.common.util.AssertUtils;
 import com.alipay.sofa.ark.common.util.StringUtils;
 import com.alipay.sofa.ark.container.model.PluginContextImpl;
 import com.alipay.sofa.ark.container.model.PluginModel;
+import com.alipay.sofa.ark.container.service.classloader.BizClassLoader;
 import com.alipay.sofa.ark.container.service.classloader.PluginClassLoader;
 import com.alipay.sofa.ark.loader.JarPluginArchive;
 import com.alipay.sofa.ark.loader.archive.JarFileArchive;
@@ -155,6 +156,67 @@ public class PluginFactoryServiceImpl implements PluginFactoryService {
         JarFileArchive jarFileArchive = new JarFileArchive(pluginFile);
         JarPluginArchive jarPluginArchive = new JarPluginArchive(jarFileArchive);
         return createPlugin(jarPluginArchive);
+    }
+
+    @Override
+    public Plugin createPlugin(PluginArchive pluginArchive, URL[] extensions,
+                               Set<String> exportPackages, ClassLoader bizClassLoader)
+                                                                                      throws IOException {
+        AssertUtils.isTrue(isArkPlugin(pluginArchive), "Archive must be a ark plugin!");
+        if (extensions == null || extensions.length == 0) {
+            return createPlugin(pluginArchive, (BizClassLoader) bizClassLoader);
+        }
+
+        PluginModel plugin = new PluginModel();
+        Attributes manifestMainAttributes = pluginArchive.getManifest().getMainAttributes();
+        plugin
+            .setPluginName(manifestMainAttributes.getValue(PLUGIN_NAME_ATTRIBUTE))
+            .setGroupId(manifestMainAttributes.getValue(GROUP_ID_ATTRIBUTE))
+            .setArtifactId(manifestMainAttributes.getValue(ARTIFACT_ID_ATTRIBUTE))
+            .setVersion(manifestMainAttributes.getValue(PLUGIN_VERSION_ATTRIBUTE))
+            .setPriority(manifestMainAttributes.getValue(PRIORITY_ATTRIBUTE))
+            .setPluginActivator(manifestMainAttributes.getValue(ACTIVATOR_ATTRIBUTE))
+            .setClassPath(getFinalPluginUrls(pluginArchive, extensions, plugin.getPluginName()))
+            .setPluginUrl(pluginArchive.getUrl())
+            .setExportClasses(manifestMainAttributes.getValue(EXPORT_CLASSES_ATTRIBUTE))
+            .setExportPackages(manifestMainAttributes.getValue(EXPORT_PACKAGES_ATTRIBUTE),
+                exportPackages)
+            .setImportClasses(manifestMainAttributes.getValue(IMPORT_CLASSES_ATTRIBUTE))
+            .setImportPackages(manifestMainAttributes.getValue(IMPORT_PACKAGES_ATTRIBUTE))
+            .setImportResources(manifestMainAttributes.getValue(IMPORT_RESOURCES_ATTRIBUTE))
+            .setExportResources(manifestMainAttributes.getValue(EXPORT_RESOURCES_ATTRIBUTE))
+            .setPluginClassLoader(
+                new PluginClassLoader(plugin.getPluginName(), plugin.getClassPath(),
+                    (BizClassLoader) bizClassLoader))
+            .setPluginContext(new PluginContextImpl(plugin));
+        return plugin;
+    }
+
+    private Plugin createPlugin(PluginArchive pluginArchive, BizClassLoader bizClassLoader)
+                                                                                           throws IOException,
+                                                                                           IllegalArgumentException {
+        AssertUtils.isTrue(isArkPlugin(pluginArchive), "Archive must be a ark plugin!");
+        PluginModel plugin = new PluginModel();
+        Attributes manifestMainAttributes = pluginArchive.getManifest().getMainAttributes();
+        plugin
+            .setPluginName(manifestMainAttributes.getValue(PLUGIN_NAME_ATTRIBUTE))
+            .setGroupId(manifestMainAttributes.getValue(GROUP_ID_ATTRIBUTE))
+            .setArtifactId(manifestMainAttributes.getValue(ARTIFACT_ID_ATTRIBUTE))
+            .setVersion(manifestMainAttributes.getValue(PLUGIN_VERSION_ATTRIBUTE))
+            .setPriority(manifestMainAttributes.getValue(PRIORITY_ATTRIBUTE))
+            .setPluginActivator(manifestMainAttributes.getValue(ACTIVATOR_ATTRIBUTE))
+            .setClassPath(pluginArchive.getUrls())
+            .setPluginUrl(pluginArchive.getUrl())
+            .setExportClasses(manifestMainAttributes.getValue(EXPORT_CLASSES_ATTRIBUTE))
+            .setExportPackages(manifestMainAttributes.getValue(EXPORT_PACKAGES_ATTRIBUTE))
+            .setImportClasses(manifestMainAttributes.getValue(IMPORT_CLASSES_ATTRIBUTE))
+            .setImportPackages(manifestMainAttributes.getValue(IMPORT_PACKAGES_ATTRIBUTE))
+            .setImportResources(manifestMainAttributes.getValue(IMPORT_RESOURCES_ATTRIBUTE))
+            .setExportResources(manifestMainAttributes.getValue(EXPORT_RESOURCES_ATTRIBUTE))
+            .setPluginClassLoader(
+                new PluginClassLoader(plugin.getPluginName(), plugin.getClassPath(), bizClassLoader))
+            .setPluginContext(new PluginContextImpl(plugin));
+        return plugin;
     }
 
     private boolean isArkPlugin(PluginArchive pluginArchive) {

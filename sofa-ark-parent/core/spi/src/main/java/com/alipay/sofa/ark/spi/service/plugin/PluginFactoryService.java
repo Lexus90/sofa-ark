@@ -59,4 +59,7 @@ public interface PluginFactoryService {
      * @throws IOException throw io exception when {@link PluginArchive} is invalid.
      */
     Plugin createPlugin(File file) throws IOException;
+
+    Plugin createPlugin(PluginArchive pluginArchive, URL[] exportUrls, Set<String> exportPackages,
+                        ClassLoader bizClassLoader) throws IOException;
 }
